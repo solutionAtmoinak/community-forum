@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased `}
+        className={`antialiased mb-[80px] md:mb-0`}
       >
         <Navbar />
         <main className="min-h-[40vh] flex flex-col">
