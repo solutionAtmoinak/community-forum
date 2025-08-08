@@ -73,7 +73,7 @@ function AnswerPage(prop: Props) {
     <>
       <div className="w-full flex justify-center flex-col items-center px-4 py-10 ">
 
-        <div className="mx-auto md:flex w-full md:w-2/3  gap-8">
+        <div className="mx-auto flex flex-col-reverse md:flex-row w-full md:w-2/3  gap-8">
           <div className="w-full md:w-2/3 px-6 py-8 space-y-8">
 
             {/* question */}

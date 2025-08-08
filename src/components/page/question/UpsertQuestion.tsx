@@ -74,9 +74,9 @@ const UpsertQuestion = (props: Props) => {
             closeOnEsc={false}
             title="Add Question"
             onClose={props.onClose}
-            size='lg'
+            className="lg:w-[50%]! md:w-[80%]! w-full!"
         >
-            <form onSubmit={handelQusSave} ref={formRef}>
+            <form onSubmit={handelQusSave} ref={formRef} className="flex flex-col gap-y-4">
                 <div className="relative mb-4">
                     <label htmlFor="qus" className="leading-7 text-sm text-gray-600">Your Question</label>
                     <QuillEditor
@@ -87,7 +87,7 @@ const UpsertQuestion = (props: Props) => {
                     />
                 </div>
                 {!!CommunityTags.length &&
-                    <div className="flex w-full gap-x-4 flex-wrap">
+                    <div className="flex w-full gap-4 flex-wrap ">
                         {CommunityTags.map((ct) => (
                             <button key={`ct-${ct.TagId}`} type="button" className={`${selectedTags.includes(Number(ct.TagId)) ? 'bg-blue-400 text-blue-50 border-blue-400' : 'border-blue-500 text-blue-500'} border  px-3 py-1 rounded cursor-pointer`}
                                 onClick={() => {
@@ -103,9 +103,9 @@ const UpsertQuestion = (props: Props) => {
                         ))}
                     </div>
                 }
-                <AttachmentInput list={attachmentList} setList={setAttachmentList} className="mt-4" />
+                <AttachmentInput list={attachmentList} setList={setAttachmentList} className="" />
 
-                <button disabled={isSubmitting} type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-6">Save</button>
+                <button disabled={isSubmitting} type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-2">Save</button>
             </form>
         </DrawerCompo>
     )

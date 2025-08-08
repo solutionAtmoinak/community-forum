@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 
 import ServerApi from "@/api/Server";
+import { PageBack } from "@/components/common";
 import CustomPagination from "@/components/common/CustomPagination";
 import { apiErrorToast } from "@/helper/apiErrorToast";
 import Pagination from "@/interface/common/Pagination";
@@ -12,6 +13,7 @@ import Image from "next/image";
 import { FormEvent, Suspense, useEffect, useState } from "react";
 import { CiCircleQuestion } from "react-icons/ci";
 import { GoCommentDiscussion } from "react-icons/go";
+import { IoArrowBack } from "react-icons/io5";
 import { MdOutlineSearch, MdOutlineTag, MdPerson } from "react-icons/md";
 const QuestionList = dynamic(() => import("./QuestionList"), { ssr: false });
 const QuestionTabFilter = dynamic(() => import('./QuestionTabFilter'), { ssr: false })
@@ -101,9 +103,16 @@ export function QuestionPage(props: Props) {
           {/* Foreground content */}
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <div className="p-6 rounded-md flex flex-col gap-6">
-              <h1 className="text-2xl font-sans font-bold text-white">
-                Sharing Knowledge, Shaping Futures.
-              </h1>
+              <div className="flex gap-x-2">
+                <PageBack>
+                  <div className="bg-white/10 px-4 py-2 shadow text-white font-bold cursor-pointer w-fit h-fit rounded-full">
+                    <IoArrowBack />
+                  </div>
+                </PageBack>
+                <h1 className="text-2xl font-sans font-bold text-white">
+                  Sharing Knowledge, Shaping Futures.
+                </h1>
+              </div>
               <form className="w-full flex" onSubmit={handelQusSearch}>
                 <input
                   type="text"
