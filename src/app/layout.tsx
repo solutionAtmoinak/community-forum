@@ -2,16 +2,12 @@
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import { CustomProvider } from "rsuite";
 import "rsuite/dist/rsuite-no-reset.min.css";
 import "./globals.css";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "Forum Hub",
@@ -26,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        style={geistMono.style}
+
         className={`antialiased `}
       >
         <CustomProvider>
