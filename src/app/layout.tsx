@@ -1,11 +1,12 @@
 
+import "rsuite/dist/rsuite-no-reset.min.css";
+import "./globals.css";
+
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
-import { CustomProvider } from "rsuite";
-import "rsuite/dist/rsuite-no-reset.min.css";
-import "./globals.css";
+
 
 
 export const metadata: Metadata = {
@@ -21,16 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-
         className={`antialiased `}
       >
-        <CustomProvider>
-          <Navbar />
-          <main className="min-h-[40vh] flex flex-col">
-            {children}
-          </main>
-          <Footer />
-        </CustomProvider>
+        <Navbar />
+        <main className="min-h-[40vh] flex flex-col">
+          {children}
+        </main>
+        <Footer />
         <ToastContainer position="top-right" autoClose={3000} />
       </body>
     </html>
