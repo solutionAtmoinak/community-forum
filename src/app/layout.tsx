@@ -6,7 +6,9 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
+import { Poppins } from 'next/font/google'
 
+const poppins = Poppins({ weight: ['400', '500', '600', '700', '800'], display: 'swap', fallback: ['sans'] })
 
 
 export const metadata: Metadata = {
@@ -22,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        style={poppins.style}
         className={`antialiased mb-[80px] md:mb-0`}
       >
         <Navbar />

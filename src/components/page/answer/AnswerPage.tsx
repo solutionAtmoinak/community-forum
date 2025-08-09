@@ -229,7 +229,7 @@ function AnswerPage(prop: Props) {
           onClose={() => setSelectedAnswer(null)}
           title={selectedAnswer?.AnswerId ? "Update Answer" : "Create Answer"}
           size="lg"
-          className="w-full! md:w-[80%]!"
+          className="lg:w-[50%]! md:w-[80%]! w-full!"
         >
           {/* <UpsertAnswerForm
             selectedAnswer={selectedAnswer}
