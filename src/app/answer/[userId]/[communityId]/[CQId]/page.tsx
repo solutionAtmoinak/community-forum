@@ -34,7 +34,7 @@ async function Home(props: Props) {
     .request({
       CommunityUserId: params.userId,
       CQId: params.CQId,
-      PageSize: 5,
+      PageSize: 10,
       PageIndex: 1,
     })
 
@@ -44,7 +44,7 @@ async function Home(props: Props) {
   const pagination: Pagination = {
     PageIndex: page?.PageIndex ?? 1,
     NoOfPages: page?.NoOfPages ?? 1,
-    PageSize: page?.PageSize ?? 5,
+    PageSize: page?.PageSize ?? 10,
   }
 
   return (

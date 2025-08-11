@@ -59,7 +59,7 @@ function AnswerPage(prop: Props) {
         setPagination({
           PageIndex: page.PageIndex ?? 1,
           NoOfPages: page.NoOfPages ?? 1,
-          PageSize: page.PageSize ?? 5,
+          PageSize: page.PageSize ?? 10,
         });
       }
     } else {
@@ -180,10 +180,10 @@ function AnswerPage(prop: Props) {
                 }}
                 className="w-full appearance-none border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               >
-                <option value={5}>5</option>
                 <option value={10}>10</option>
-                <option value={15}>15</option>
-                <option value={20}>20</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
                 ▼
@@ -201,7 +201,7 @@ function AnswerPage(prop: Props) {
             pageRangeDisplayed={3}
             onPageChange={({ selected }) => {
               fetchAnswers(
-                pagination?.PageSize ?? 5,
+                pagination?.PageSize ?? 10,
                 selected + 1
               )
               // setPagination((prev) => ({ ...prev, PageIndex: selected + 1 }))
@@ -238,7 +238,7 @@ function AnswerPage(prop: Props) {
           /> */}
           <UpsertAnswer2
             selectedAnswer={selectedAnswer}
-            refetch={() => fetchAnswers(pagination.PageSize ?? 5, pagination.PageIndex ?? 1)}
+            refetch={() => fetchAnswers(pagination.PageSize ?? 10, pagination.PageIndex ?? 1)}
             onDrawerClose={() => setSelectedAnswer(null)}
           />
         </DrawerComponent>

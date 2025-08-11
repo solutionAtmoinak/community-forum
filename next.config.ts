@@ -7,25 +7,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "ui-avatars.com",
-        pathname: "/api/**",
+        protocol: 'https',
+        hostname: '**', // Wildcard for any domain
       },
       {
-        protocol: "http",
-        hostname: "ui-avatars.com",
-        pathname: "/api/**",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.pixabay.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "lottie.host",
-        pathname: "/**",
-      },
+        protocol: 'http',
+        hostname: '**', // If you also need http
+      }
     ],
   },
 };

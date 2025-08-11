@@ -20,8 +20,10 @@ export default function DrawerComponent(props: DrawerProps) {
           <Drawer.Title>{props.title}</Drawer.Title>
           {props.action && <Drawer.Actions>{props.action}</Drawer.Actions>}
         </Drawer.Header>
-        <Drawer.Body className={`${props.bodyClassName} mb-[80px] md:mb-0 px-[30px]! md:px-[60px]! py-[60px]!`}>
+        <Drawer.Body className={`${props.bodyClassName} px-[30px]! md:px-[60px]! py-[60px]!`}>
           {props.children}
+          {/* blank space */}
+          <div className="h-[100px] md:h-0"></div>
         </Drawer.Body>
       </Drawer>
     </CustomProvider>

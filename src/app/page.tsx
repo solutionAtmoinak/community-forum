@@ -76,28 +76,28 @@ export default function Home() {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 w-fit">
             Welcome Back
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">Please login to your account</p>
+          <p className="text-gray-600 ">Please login to your account</p>
         </div>
 
         <form onSubmit={handelLogin} className="space-y-6">
           <div className="space-y-2">
             <label
               htmlFor=""
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              className="block text-sm font-semibold text-gray-700 "
             >
               Username
             </label>
             <input
               type="text"
               name="userId"
-              className="form-input w-full px-4 py-3 border-2 border-gray-200 dark:border-slate-600 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 outline-none hover:border-gray-300 dark:hover:border-slate-500 bg-white/80 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+              className="form-input w-full px-4 py-3 border-2 border-gray-200  rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 outline-none hover:border-gray-300 bg-white/80  text-gray-900  placeholder-gray-400 "
             />
           </div>
 
           <div className="space-y-2">
             <label
               htmlFor=""
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              className="block text-sm font-semibold text-gray-700"
             >
               Password
             </label>
@@ -105,10 +105,10 @@ export default function Home() {
               <input
                 type={togglePassword}
                 name="password"
-                className="form-input w-full px-4 py-3 border-2 border-gray-200 dark:border-slate-600 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 outline-none hover:border-gray-300 dark:hover:border-slate-500 bg-white/80 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                className="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 outline-none hover:border-gray-300 bg-white/80  placeholder-gray-400 "
               />
               <button type="button" onClick={() => setTogglePassword((prev) => prev === 'password' ? 'text' : 'password')}
-                className="px-4 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 dark:from-indigo-600 dark:to-indigo-700 text-white rounded-xl hover:from-indigo-600 hover:to-indigo-700 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg flex items-center justify-center min-w-[52px] cursor-pointer"
+                className="px-4 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl hover:from-indigo-600 hover:to-indigo-700 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg flex items-center justify-center min-w-[52px] cursor-pointer"
               >
                 <FaEye />
               </button>
@@ -134,12 +134,12 @@ export default function Home() {
               id="captchaInput"
               type="text"
               name="captcha"
-              className="form-input w-full px-4 py-3 border-2 border-gray-200 dark:border-slate-600 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 outline-none hover:border-gray-300 dark:hover:border-slate-500 bg-white/80 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+              className="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 outline-none hover:border-gray-300 bg-white/80 text-gray-900 placeholder-gray-400 "
             />
             <button
               type="button"
               onClick={changeCaptcha}
-              className="px-4 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 text-white rounded-xl hover:from-emerald-600 hover:to-emerald-700 focus:ring-4 focus:ring-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg flex items-center justify-center min-w-[52px] cursor-pointer"
+              className="px-4 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl hover:from-emerald-600 hover:to-emerald-700 focus:ring-4 focus:ring-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg flex items-center justify-center min-w-[52px] cursor-pointer"
             >
               <MdRestore />
             </button>
@@ -147,7 +147,7 @@ export default function Home() {
 
           <button
             type="submit"
-            className="btn btn-primary w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-800 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl uppercase tracking-wide text-sm cursor-pointer"
+            className="btn btn-primary w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl uppercase tracking-wide text-sm cursor-pointer"
           >
             Login
           </button>
@@ -156,7 +156,7 @@ export default function Home() {
         <div className="mt-6 text-center">
           <a
             href="#"
-            className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200"
+            className="text-sm text-indigo-600  hover:text-indigo-700 transition-colors duration-200"
           >
             Forgot your password?
           </a>

@@ -5,11 +5,14 @@ import { useToken } from "@/helper/useToken";
 import { TBlCommunityTags, TblQuestion } from "@/interface/database";
 import Image from "next/image";
 
+import { toastNotify } from "@/helper";
 import Link from "next/link";
 import { useState } from "react";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { FaReply } from "react-icons/fa";
 import { ImPushpin } from "react-icons/im";
+import { MdDelete, MdModeEditOutline } from "react-icons/md";
+import Swal from "sweetalert2";
 import UpsertQuestion from "./UpsertQuestion";
 
 type Props = {
@@ -34,6 +37,14 @@ function QuestionList(props: Props) {
     token: jwtToken
   });
 
+  const delQusApi = new ServerApi({
+    spName: 'spCommunityForumWebsite',
+    mode: 6,
+    withAuth: true,
+    token: jwtToken
+  });
+
+
   async function toggleLikeDislike(q: TblQuestion, type: "like" | "dislike") {
     const likeJson = await likeDislikeApi.request({
       CommunityUserId: userId,
@@ -49,6 +60,33 @@ function QuestionList(props: Props) {
     }
     if (likeJson.isSuccess) props.refetch();
     else apiErrorToast(likeJson);
+  }
+
+  async function handelDelQus(q: TblQuestion) {
+    Swal.fire({
+      title: 'Attention !!',
+      text: 'Do you want to delete this question?',
+      icon: 'question',
+      showDenyButton: true,
+      showCancelButton: false,
+      denyButtonText: 'Cancel',
+      confirmButtonText: 'Yes, Do it'
+    }).then(async (ack) => {
+      if (ack.isConfirmed) {
+        const res = await delQusApi.request({
+          QuestionId: q.QuestionId,
+          CommunityUserId: userId,
+        })
+        if (res.statusCode === 401) {
+          removeToken()
+        }
+        if (res.isSuccess) {
+          toastNotify(res.result)
+        } else {
+          apiErrorToast(res)
+        }
+      }
+    })
   }
 
   return (
@@ -162,9 +200,25 @@ function QuestionList(props: Props) {
             </div>
           </div>
 
-          {/* <button onClick={() => setSelectedQuestion(q)}>
-            edit
-          </button> */}
+          {userId === q.CreatedUser?.[0].Id &&
+            <div className="flex gap-3">
+              <button
+                onClick={() => setSelectedQuestion(q)}
+                className="btn btn-sm btn-outline-primary flex gap-x-2"
+              >
+                <MdModeEditOutline />
+                Edit
+              </button>
+
+              <button
+                onClick={() => handelDelQus(q)}
+                className="btn btn-sm btn-outline-danger flex gap-x-2"
+              >
+                <MdDelete />
+                Delete
+              </button>
+            </div>
+          }
         </div>
       ))}
       {!!selectedQuestion &&
@@ -174,6 +228,7 @@ function QuestionList(props: Props) {
           CommunityTags={props.CommunityTags}
           onClose={() => setSelectedQuestion(null)}
           open={!!selectedQuestion} refetch={props.refetch}
+          UserId={userId}
         />
       }
     </>

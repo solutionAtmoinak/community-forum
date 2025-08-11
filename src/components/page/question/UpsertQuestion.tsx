@@ -5,8 +5,9 @@ import AttachmentInput from "@/components/common/AttachmentInput"
 import { DrawerCompo, QuillEditor, QuillEditorRef } from "@/components/utils"
 import { apiErrorToast, toastNotify, useToken } from "@/helper"
 import { TBlCommunityTags, TblQuestion, TblQuestionAttachment } from "@/interface/database"
-import { FormEvent, useRef, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 
+const questionApi = new ServerApi({ spName: "spCommunityForumAnonymous", mode: 6 });
 
 const UpsertQuestion = (props: Props) => {
     const { jwtToken, removeToken } = useToken()
@@ -28,6 +29,22 @@ const UpsertQuestion = (props: Props) => {
         token: jwtToken
     });
 
+    useEffect(() => {
+        if (SelectedQuestion.CQId) {
+            questionApi.request({
+                CommunityUserId: props.UserId,
+                CommunityId: SelectedQuestion.CommunityId,
+                CQId: SelectedQuestion.CQId,
+            }).then((res) => {
+                if (res.isSuccess) {
+                    const json = JSON.parse(res.result)[0]
+                    if (json) {
+                        setAttachmentList(json?.QuestionAttachment ?? [])
+                    }
+                }
+            })
+        }
+    }, [SelectedQuestion, props.UserId])
 
 
     async function handelQusSave(e: FormEvent<HTMLFormElement>) {
@@ -72,11 +89,12 @@ const UpsertQuestion = (props: Props) => {
         <DrawerCompo
             open={props.open}
             closeOnEsc={false}
-            title="Add Question"
+            title={`${!!SelectedQuestion.QuestionId ? 'Update' : 'Create'} Question`}
             onClose={props.onClose}
+            size='lg'
             className="lg:w-[50%]! md:w-[80%]! w-full!"
         >
-            <form onSubmit={handelQusSave} ref={formRef} className="flex flex-col gap-y-4">
+            <form onSubmit={handelQusSave} ref={formRef}>
                 <div className="relative mb-4">
                     <label htmlFor="qus" className="leading-7 text-sm text-gray-600">Your Question</label>
                     <QuillEditor
@@ -87,7 +105,7 @@ const UpsertQuestion = (props: Props) => {
                     />
                 </div>
                 {!!CommunityTags.length &&
-                    <div className="flex w-full gap-4 flex-wrap ">
+                    <div className="flex w-full gap-4 flex-wrap">
                         {CommunityTags.map((ct) => (
                             <button key={`ct-${ct.TagId}`} type="button" className={`${selectedTags.includes(Number(ct.TagId)) ? 'bg-blue-400 text-blue-50 border-blue-400' : 'border-blue-500 text-blue-500'} border  px-3 py-1 rounded cursor-pointer`}
                                 onClick={() => {
@@ -103,9 +121,9 @@ const UpsertQuestion = (props: Props) => {
                         ))}
                     </div>
                 }
-                <AttachmentInput list={attachmentList} setList={setAttachmentList} className="" />
+                <AttachmentInput list={attachmentList} setList={setAttachmentList} className="mt-4" />
 
-                <button disabled={isSubmitting} type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-2">Save</button>
+                <button disabled={isSubmitting} type="submit" className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-6">Save</button>
             </form>
         </DrawerCompo>
     )
@@ -120,6 +138,7 @@ interface Props {
     refetch: () => void
     onClose: () => void
     CommunityTags: TBlCommunityTags[]
+    UserId?: string
 }
 
 export default UpsertQuestion

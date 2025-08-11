@@ -34,7 +34,7 @@ async function page({ params }: Props) {
   const questionRes = await questionApi.request({
     CommunityId: communityId,
     CommunityUserId: userId,
-    PageSize: 5,
+    PageSize: 10,
     PageIndex: 1,
   })
 
@@ -55,7 +55,7 @@ async function page({ params }: Props) {
   const questionList = qusData.Questions || [];
   const page = JSON.parse(qusData?.PaginationData ?? '{}')
   const pagination: Pagination = {
-    PageSize: page?.PageSize ?? 5,
+    PageSize: page?.PageSize ?? 10,
     PageIndex: page?.PageIndex ?? 1,
     NoOfPages: page?.NoOfPages ?? 1,
   }

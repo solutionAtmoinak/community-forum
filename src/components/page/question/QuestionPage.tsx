@@ -2,7 +2,6 @@
 import dynamic from "next/dynamic";
 
 import ServerApi from "@/api/Server";
-import { PageBack } from "@/components/common";
 import CustomPagination from "@/components/common/CustomPagination";
 import { apiErrorToast } from "@/helper/apiErrorToast";
 import Pagination from "@/interface/common/Pagination";
@@ -13,8 +12,9 @@ import Image from "next/image";
 import { FormEvent, Suspense, useEffect, useState } from "react";
 import { CiCircleQuestion } from "react-icons/ci";
 import { GoCommentDiscussion } from "react-icons/go";
-import { IoArrowBack } from "react-icons/io5";
 import { MdOutlineSearch, MdOutlineTag, MdPerson } from "react-icons/md";
+import { PageBack } from "@/components/common";
+import { IoArrowBack } from "react-icons/io5";
 const QuestionList = dynamic(() => import("./QuestionList"), { ssr: false });
 const QuestionTabFilter = dynamic(() => import('./QuestionTabFilter'), { ssr: false })
 
@@ -57,7 +57,7 @@ export function QuestionPage(props: Props) {
       setPagination({
         PageIndex: page.PageIndex ?? 1,
         NoOfPages: page.NoOfPages ?? 1,
-        PageSize: page.PageSize ?? 5,
+        PageSize: page.PageSize ?? 10,
       });
     } else {
       apiErrorToast(json)
@@ -67,7 +67,7 @@ export function QuestionPage(props: Props) {
   }
 
   const qusTabFilter = async (t: QuestionTabType) => {
-    await fetchQuestion({ PageSize: 5, PageIndex: 1, TagId: undefined, tab: t })
+    await fetchQuestion({ PageSize: 10, PageIndex: 1, TagId: undefined, tab: t })
     setActiveTab(t)
   }
 
@@ -76,7 +76,7 @@ export function QuestionPage(props: Props) {
     if (e.currentTarget) {
       const formData = new FormData(e.currentTarget)
       await fetchQuestion({
-        PageSize: pagination.PageSize ?? 5,
+        PageSize: pagination.PageSize ?? 10,
         PageIndex: pagination.PageIndex ?? 1,
         search: formData.get('qusSearch')?.toString()
       })
@@ -166,7 +166,7 @@ export function QuestionPage(props: Props) {
           communityId={props.communityId}
           refetch={async () =>
             await fetchQuestion({
-              PageSize: pagination.PageSize ?? 5,
+              PageSize: pagination.PageSize ?? 10,
               PageIndex: pagination.PageIndex ?? 1
             })
           }
@@ -193,13 +193,13 @@ export function QuestionPage(props: Props) {
                   CommunityTags={props.CommunityTags ?? []}
                   refetch={async () =>
                     await fetchQuestion({
-                      PageSize: pagination.PageSize ?? 5,
+                      PageSize: pagination.PageSize ?? 10,
                       PageIndex: pagination.PageIndex ?? 1
                     })
                   }
                   tagIdRefetch={async (TagId) =>
                     await fetchQuestion({
-                      PageSize: pagination.PageSize ?? 5,
+                      PageSize: pagination.PageSize ?? 10,
                       PageIndex: 1,
                       TagId
                     })
@@ -216,14 +216,14 @@ export function QuestionPage(props: Props) {
             CommunityTags={props.CommunityTags ?? []}
             onClick={async (TagId) => {
               await fetchQuestion({
-                PageSize: pagination.PageSize ?? 5,
+                PageSize: pagination.PageSize ?? 10,
                 PageIndex: 1,
                 TagId
               })
             }}
             onReset={async () => {
               await fetchQuestion({
-                PageSize: pagination.PageSize ?? 5,
+                PageSize: pagination.PageSize ?? 10,
                 PageIndex: pagination.PageIndex ?? 1
               })
             }}
@@ -235,7 +235,7 @@ export function QuestionPage(props: Props) {
             <select
               name="number"
               id="number"
-              value={pagination?.PageSize ?? 5}
+              value={pagination?.PageSize ?? 10}
               onChange={(e) => {
                 const newPageSize = Number(e.target.value);
                 fetchQuestion({
@@ -245,14 +245,14 @@ export function QuestionPage(props: Props) {
               }}
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value={5}>5</option>
               <option value={10}>10</option>
-              <option value={15}>15</option>
-              <option value={20}>20</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
             </select>
 
             <p className="text-sm text-gray-600">
-              Question per page: {pagination?.PageSize ?? 5}
+              Question per page: {pagination?.PageSize ?? 10}
             </p>
           </div>
 
@@ -266,7 +266,7 @@ export function QuestionPage(props: Props) {
             pageRangeDisplayed={3}
             onPageChange={({ selected }) => {
               fetchQuestion({
-                PageSize: pagination.PageSize ?? 5,
+                PageSize: pagination.PageSize ?? 10,
                 PageIndex: selected + 1
               })
               // setPagination((prev) => ({ ...prev, PageIndex: selected + 1 }))

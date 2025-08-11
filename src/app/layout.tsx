@@ -1,14 +1,10 @@
 
-import "rsuite/dist/rsuite-no-reset.min.css";
-import "./globals.css";
-
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
-
-
-
+import "rsuite/dist/rsuite-no-reset.min.css";
+import "./globals.css";
 
 
 export const metadata: Metadata = {

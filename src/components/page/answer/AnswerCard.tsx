@@ -5,6 +5,7 @@ import TblAnswer from "@/interface/database/TblAnswer";
 import Image from "next/image";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { MdDelete, MdModeEditOutline } from "react-icons/md";
+import Swal from "sweetalert2";
 
 type Props = {
   answer: TblAnswer;
@@ -32,17 +33,32 @@ function AnswerCard(prop: Props) {
     token: jwtToken
   });
 
-  async function deleteInput(id: number) {
-    const res = await deleteAnsApi.request({
-      AnswerId: id,
-      CommunityUserId: userId,
-    });
-    if (res.statusCode === 401) {
-      removeToken()
-    }
-    if (res.isSuccess) {
-      prop.refetch();
-    }
+  async function handelDelAns() {
+    Swal.fire({
+      title: 'Attention !!',
+      text: 'Do you want to delete this answer?',
+      icon: 'question',
+      showDenyButton: true,
+      showCancelButton: false,
+      denyButtonText: 'Cancel',
+      confirmButtonText: 'Yes, Do it'
+    }).then(async (ack) => {
+      if (ack.isConfirmed) {
+        const res = await deleteAnsApi.request({
+          AnswerId: answer.AnswerId,
+          CommunityUserId: userId,
+        });
+        if (res.statusCode === 401) {
+          removeToken()
+        }
+        if (res.isSuccess) {
+          prop.refetch();
+        } else {
+          apiErrorToast(res)
+        }
+      }
+    })
+
   }
 
   async function toggleLikeDislike(a: TblAnswer, type: "like" | "dislike") {
@@ -125,28 +141,28 @@ function AnswerCard(prop: Props) {
           {/* Likes */}
           <div className="flex items-center gap-4 text-gray-600 text-sm">
             <button
-              onClick={() => toggleLikeDislike(prop.answer, "like")}
+              onClick={() => toggleLikeDislike(answer, "like")}
               className="hover:text-blue-600 transition cursor-pointer"
             >
-              {prop.answer.IsLiked ? (
+              {answer.IsLiked ? (
                 <BiSolidLike className="w-5 h-5 text-blue-500" />
               ) : (
                 <BiLike className="w-5 h-5 text-blue-500" />
               )}
             </button>
-            <span>{prop.answer.LikeCount}</span>
+            <span>{answer.LikeCount}</span>
 
             <button
-              onClick={() => toggleLikeDislike(prop.answer, "dislike")}
+              onClick={() => toggleLikeDislike(answer, "dislike")}
               className="hover:text-red-500 transition cursor-pointer"
             >
-              {prop.answer.IsDisLiked ? (
+              {answer.IsDisLiked ? (
                 <BiSolidDislike className="w-5 h-5 text-rose-500" />
               ) : (
                 <BiDislike className="w-5 h-5 text-rose-500" />
               )}
             </button>
-            <span>{prop.answer.DisLikeCount}</span>
+            <span>{answer.DisLikeCount}</span>
           </div>
 
           {/* Buttons */}
@@ -154,15 +170,15 @@ function AnswerCard(prop: Props) {
             <div className="flex gap-3">
               <button
                 onClick={() => prop.onAnswerSelect()}
-                className="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-sm text-white font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+                className="btn btn-sm btn-outline-primary flex gap-x-2"
               >
                 <MdModeEditOutline />
                 Edit
               </button>
 
               <button
-                onClick={() => deleteInput(prop.answer.AnswerId!)}
-                className="inline-flex items-center gap-2 rounded-lg bg-rose-500 px-4 py-2 text-sm text-white font-medium shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all"
+                onClick={handelDelAns}
+                className="btn btn-sm btn-outline-danger flex gap-x-2"
               >
                 <MdDelete />
                 Delete
