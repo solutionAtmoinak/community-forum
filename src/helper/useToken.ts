@@ -3,12 +3,14 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useCookie } from "./useCookie";
 
 export function useToken() {
   const router = useRouter();
   const pathname = usePathname();
 
   const [token, setToken] = useState<string>("");
+  const tokenCookie = useCookie("token");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -28,6 +30,7 @@ export function useToken() {
       }).then((res) => {
         setToken("");
         localStorage.removeItem("token");
+        tokenCookie.remove();
         if (res.isConfirmed) {
           router.replace("/");
         }

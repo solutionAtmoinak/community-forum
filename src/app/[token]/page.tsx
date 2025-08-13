@@ -1,9 +1,10 @@
 'use client'
 
 import AuthApi from '@/api/AuthApi';
+import { useCookie } from '@/helper';
 import userModel from '@/interface/database/userModel';
 import { jwtDecode } from 'jwt-decode';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
 
@@ -34,6 +35,18 @@ const authApi = new AuthApi()
 const Page = () => {
     const router = useRouter();
     const params = useParams();
+    const searchParam = useSearchParams()
+    const fc = searchParam.get('fc');
+
+    const fcCookie = useCookie('fc');
+    const tokenCookie = useCookie('token');
+
+    useEffect(() => {
+        if (fc !== null) {
+            fcCookie.set(fc, { path: '/', sameSite: 'strict', });
+        }
+    }, [fc, fcCookie])
+
 
     useEffect(() => {
         const token = params.token as string;
@@ -53,6 +66,7 @@ const Page = () => {
                 .then(res => {
                     if (res.isSuccess) {
                         localStorage.setItem('token', token);
+                        tokenCookie.set(token, { path: '/' });
                         const user: userModel = jwtDecode(token)
                         router.replace(`/forum/${user.nameid}`);
                     } else {
@@ -75,7 +89,7 @@ const Page = () => {
             // If token is neither valid UUID nor JWT, redirect to login
             router.replace('/');
         }
-    }, [params.token, router]);
+    }, [params.token, router, tokenCookie]);
 
     return (
         <div className="flex items-center justify-center my-auto p-4">

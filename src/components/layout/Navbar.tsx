@@ -11,6 +11,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { IoIosLogOut } from "react-icons/io"
 import ModalComp from '../utils/ModalComp'
+import { useCookie } from '@/helper/useCookie'
 
 const authApi = new AuthApi()
 
@@ -19,6 +20,7 @@ const Navbar = () => {
     const pathname = usePathname()
     const [user, setUser] = useState<userModel | null>(null);
     const [OpenProfile, setOpenProfile] = useState<boolean>(false)
+    const tokenCookie = useCookie('token');
 
     useEffect(() => {
         const jwt = localStorage.getItem('token')
@@ -42,6 +44,7 @@ const Navbar = () => {
                 apiErrorToast(res)
             }
             localStorage.removeItem('token')
+            tokenCookie.remove()
         }
         router.replace('/')
     }

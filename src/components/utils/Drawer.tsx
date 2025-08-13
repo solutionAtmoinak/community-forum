@@ -25,7 +25,6 @@ export default function DrawerComponent(props: DrawerProps) {
           {/* blank space */}
           <div className="h-[100px] md:h-0"></div>
         </Drawer.Body>
-        {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. A saepe recusandae adipisci fugit earum sit magnam vero! Obcaecati eveniet ipsum, sequi non voluptatem temporibus soluta! */}
       </Drawer>
     </CustomProvider>
   );

@@ -2,6 +2,7 @@
 
 import AuthApi from "@/api/AuthApi";
 import { apiErrorToast } from "@/helper/apiErrorToast";
+import { useCookie } from "@/helper/useCookie";
 import userModel from "@/interface/database/userModel";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
@@ -19,6 +20,7 @@ export default function Home() {
 
   const [captcha, setCaptcha] = useState({ captchaId: "", captchaImg: "" });
   const [togglePassword, setTogglePassword] = useState<'password' | 'text'>('password');
+  const tokenCookie = useCookie('token');
 
   useEffect(() => {
     authApi.getCaptcha().then((res) => {
@@ -60,6 +62,7 @@ export default function Home() {
         const { token } = res.result
         const user: userModel = jwtDecode(token);
         localStorage.setItem("token", token);
+        tokenCookie.set(token, { path: '/' });
         router.replace(`/forum/${user.nameid}`);
       } else {
         apiErrorToast(res)
@@ -153,14 +156,14 @@ export default function Home() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        {/* <div className="mt-6 text-center">
           <a
             href="#"
             className="text-sm text-indigo-600  hover:text-indigo-700 transition-colors duration-200"
           >
             Forgot your password?
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );
