@@ -1,15 +1,7 @@
 "use client";
 
+import { CookieOptions } from "@/interface/common/CookieOption";
 import { useCallback } from "react";
-
-type CookieOptions = {
-  path?: string;
-  expires?: Date | number; // Date or days from now
-  maxAge?: number;
-  domain?: string;
-  secure?: boolean;
-  sameSite?: "lax" | "strict" | "none";
-};
 
 function serializeCookie(
   name: string,
@@ -27,7 +19,7 @@ function serializeCookie(
   if (options.expires) {
     const expires =
       options.expires instanceof Date
-        ? options.expires.toUTCString()
+        ? options.expires.toString()
         : new Date(Date.now() + options.expires * 864e5).toUTCString();
     cookieStr += `; expires=${expires}`;
   }

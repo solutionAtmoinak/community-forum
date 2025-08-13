@@ -1,5 +1,6 @@
 "use client";
 
+import { ServerApi } from "@/api";
 import AuthApi from "@/api/AuthApi";
 import { apiErrorToast } from "@/helper/apiErrorToast";
 import { useCookie } from "@/helper/useCookie";
@@ -21,6 +22,8 @@ export default function Home() {
   const [captcha, setCaptcha] = useState({ captchaId: "", captchaImg: "" });
   const [togglePassword, setTogglePassword] = useState<'password' | 'text'>('password');
   const tokenCookie = useCookie('token');
+  const fcCookie = useCookie('fc');
+  const sessionCookie = useCookie('session');
 
   useEffect(() => {
     authApi.getCaptcha().then((res) => {
@@ -32,6 +35,29 @@ export default function Home() {
       }
     })
   }, [])
+
+  useEffect(() => {
+    const session = sessionCookie.get();
+    if (session === 'start') {
+      const token = tokenCookie?.get() ?? localStorage.getItem('token');
+      if (token) {
+        const user: userModel = jwtDecode(token);
+        router.replace(`/forum/${user.nameid}`);
+      }
+    } else {
+      const token = tokenCookie?.get() ?? localStorage.getItem('token');
+      if (token) {
+        authApi.validateToken(token).then((res) => {
+          if (res.isSuccess) {
+            const user: userModel = jwtDecode(token);
+            sessionCookie.set('start', { path: '/' })
+            router.replace(`/forum/${user.nameid}`);
+          }
+        })
+      }
+    }
+  }, [router, sessionCookie, tokenCookie]);
+
 
   const changeCaptcha = () => {
     authApi.getCaptcha().then((res) => {
@@ -61,8 +87,16 @@ export default function Home() {
       if (res.isSuccess) {
         const { token } = res.result
         const user: userModel = jwtDecode(token);
+        const fcCodeApi = new ServerApi({ spName: "spCommunityForumWebsite", mode: 8, withAuth: true, token });
+        const fcCodeResponse = await fcCodeApi.request();
+        if (fcCodeResponse.isSuccess) {
+          const json = JSON.parse(fcCodeResponse.result);
+          if (json[0]) {
+            fcCookie.set(json[0].FcCode, { sameSite: 'strict', expires: new Date(user?.exp * 1000) });
+          }
+        }
         localStorage.setItem("token", token);
-        tokenCookie.set(token, { path: '/' });
+        tokenCookie.set(token, { sameSite: 'strict', expires: new Date(user.exp * 1000) });
         router.replace(`/forum/${user.nameid}`);
       } else {
         apiErrorToast(res)

@@ -1,11 +1,12 @@
 'use client'
 
+import { ServerApi } from '@/api';
 import AuthApi from '@/api/AuthApi';
-import { useCookie } from '@/helper';
+import { useCookie } from '@/helper/useCookie';
 import userModel from '@/interface/database/userModel';
 import { jwtDecode } from 'jwt-decode';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
 
 const isValidJWT = (token: string): boolean => {
@@ -47,6 +48,19 @@ const Page = () => {
         }
     }, [fc, fcCookie])
 
+    const getFcCode = useCallback(async (jwt: string) => {
+        const user: userModel = jwtDecode(jwt)
+        tokenCookie.set(jwt, { sameSite: 'strict', expires: new Date(user.exp * 1000) });
+        const fcCodeApi = new ServerApi({ spName: "spCommunityForumWebsite", mode: 8, withAuth: true, token: jwt });
+        const fcCodeResponse = await fcCodeApi.request();
+        if (fcCodeResponse.isSuccess) {
+            const json = JSON.parse(fcCodeResponse.result);
+            if (json[0]) {
+                fcCookie.set(json[0].FcCode, { sameSite: 'strict', expires: new Date(user?.exp * 1000) });
+            }
+        }
+    }, [fcCookie, tokenCookie]);
+
 
     useEffect(() => {
         const token = params.token as string;
@@ -63,11 +77,11 @@ const Page = () => {
         } else if (isValidJWT(token)) {
             // Check if token is a valid JWT
             authApi.validateToken(token)
-                .then(res => {
+                .then(async (res) => {
                     if (res.isSuccess) {
                         localStorage.setItem('token', token);
-                        tokenCookie.set(token, { path: '/' });
                         const user: userModel = jwtDecode(token)
+                        await getFcCode(token);
                         router.replace(`/forum/${user.nameid}`);
                     } else {
                         router.replace('/');
@@ -89,7 +103,7 @@ const Page = () => {
             // If token is neither valid UUID nor JWT, redirect to login
             router.replace('/');
         }
-    }, [params.token, router, tokenCookie]);
+    }, [params.token, router, getFcCode]);
 
     return (
         <div className="flex items-center justify-center my-auto p-4">

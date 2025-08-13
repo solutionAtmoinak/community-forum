@@ -21,6 +21,8 @@ const Navbar = () => {
     const [user, setUser] = useState<userModel | null>(null);
     const [OpenProfile, setOpenProfile] = useState<boolean>(false)
     const tokenCookie = useCookie('token');
+    const fcCookie = useCookie('fc');
+    const sessionCookie = useCookie('session');
 
     useEffect(() => {
         const jwt = localStorage.getItem('token')
@@ -44,7 +46,9 @@ const Navbar = () => {
                 apiErrorToast(res)
             }
             localStorage.removeItem('token')
-            tokenCookie.remove()
+            tokenCookie.remove();
+            fcCookie.remove();
+            sessionCookie.remove();
         }
         router.replace('/')
     }
