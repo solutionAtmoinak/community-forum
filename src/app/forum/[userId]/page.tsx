@@ -32,10 +32,14 @@ export default async function Page({ params }: Props) {
       redirect('/')
     }
   } else {
+    if (fcCookie === undefined) {
+      console.log("fc cookie not found");
+      redirect('/');
+    }
     const server = new ServerApi({ spName: "spCommunityForumAnonymous", mode: 1 });
     const json: ApiResponse = await server.request({
       CommunityUserId: userId,
-      FcCode: fcCookie?.value
+      FcCode: fcCookie.value
     });
     if (json.isSuccess) {
       const result = JSON.parse(json?.result)
